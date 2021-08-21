@@ -1,0 +1,1 @@
+Winhide, Search Bar

@@ -1,22 +1,31 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const spawn = require('child_process').spawn;
+
 
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 563,
+    height: 61,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
+      contextIsolation: false,
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
+    },
+    frame: false,
+    alwaysOnTop: true,
+    autoHideMenuBar: true,
+    opacity: .7,
+    transparent: true
   })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -39,5 +48,23 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+ipcMain.on('msg', (e, a) => {
+  if (a === 'quit') app.quit()
+  else console.log(a)
+})
+
+ipcMain.on('exec', (e, a) => {
+  const cmd = spawn(a);
+//  const ahk = spawn('C:\\Program Files\\AutoHotkey\\Autohotkey.exe', [__dirname + '\\hide.ahk'])
+  // console.log()
+
+  cmd.on('close', (code) => {
+    if (!code) console.log(`Successfully ran command`);
+    else console.log('Oh shit! ', code)
+  });
+
+  // ahk.on('close', (code) => {
+  //   if (!code) console.log(`Successfully ran command`);
+  //   else console.log('Oh shit! ', code)
+  // });
+})

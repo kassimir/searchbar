@@ -4,3 +4,9 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+
+// const fs = require('fs');
+//
+// const e = fs.existsSync('./main.css')
+//
+// console.log('e?? ', e)

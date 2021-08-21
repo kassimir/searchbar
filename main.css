@@ -1,0 +1,28 @@
+body {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  height: 55px;
+  width: 555px;
+  margin: 0;
+  overflow: hidden;
+}
+
+#bar {
+  margin: 0;
+  height: 55px;
+  width: 505px;
+  border-radius: 5px;
+  outline: none;
+  font-size: 33px;
+  padding-left: 50px;
+}
+
+#icon {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+}
