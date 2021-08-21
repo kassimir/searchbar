@@ -2,6 +2,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const spawn = require('child_process').spawn;
+const fs = require('fs')
 
 
 function createWindow () {
@@ -55,8 +56,7 @@ ipcMain.on('msg', (e, a) => {
 
 ipcMain.on('exec', (e, a) => {
   const cmd = spawn(a);
-//  const ahk = spawn('C:\\Program Files\\AutoHotkey\\Autohotkey.exe', [__dirname + '\\hide.ahk'])
-  // console.log()
+  //  const ahk = spawn('C:\\Program Files\\AutoHotkey\\Autohotkey.exe', [__dirname + '\\hide.ahk'])
 
   cmd.on('close', (code) => {
     if (!code) console.log(`Successfully ran command`);
@@ -67,4 +67,10 @@ ipcMain.on('exec', (e, a) => {
   //   if (!code) console.log(`Successfully ran command`);
   //   else console.log('Oh shit! ', code)
   // });
+})
+
+ipcMain.on('fs', (e, a) => {
+  const ret = fs[a[0]](a[1])
+  console.log(ret)
+  e.returnValue = ret
 })

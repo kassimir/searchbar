@@ -1,5 +1,4 @@
 const ipc = require('electron').ipcRenderer
-const e = require('child_process').exec
 
 // Messaging
 
@@ -10,8 +9,21 @@ const quit = () => ipc.send('msg', 'quit')
   Execute function
   c: command to execute
 */
-const exec = c => {
-  ipc.send('exec', c)
+// const exec = c => {
+//   ipc.send('exec', c)
+// }
+
+/*
+  Node processes in order to keep everything in the "back end"
+  exec: sends 'exec' message for spawning and executing
+    c = command to execute
+  fs: sends 'fs' message for file system functions
+    f = file system function
+    args = arguments to be used
+ */
+const node = {
+  exec: c => ipc.send('exex', c),
+  fs: (f, ...args) => ipc.send('fs', args)
 }
 
 const isLetter = (val) => {
@@ -48,5 +60,5 @@ const isLetter = (val) => {
 }
 
 module.exports = {
-  quit, exec, isLetter
+  quit, isLetter, node
 }

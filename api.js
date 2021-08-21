@@ -1,5 +1,8 @@
-const ipc = require('electron').ipcMain
+const ipc = require('electron').ipcRenderer
 
-ipc.on('get', (e, a) => {
+const exec = c => ipc.send('exec', c)
+const fs = (...args) => ipc.sendSync('fs', args)
 
-})
+module.exports = {
+  exec, fs
+}

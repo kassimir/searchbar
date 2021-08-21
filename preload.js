@@ -6,8 +6,12 @@ const q = ele => document.querySelector(ele)
 // Config for commands
 const config = require('./config')
 // Util functions
-const { quit, exec, isLetter } = require('./utils')
+const { quit, isLetter } = require('./utils')
+// Constants
+const defaultBrowser = require('./constant').BROWSER.DEFAULT
 
+
+const { exec, fs } = require('./api')
 
 // CONSTANTS
 // the bar
@@ -19,7 +23,7 @@ const ICON = q('#icon')
 // search types
 const SEARCHTYPE = {
   drive: 'drive',
-  search: {
+  internet: {
     google: 'google',
     bing: 'bing'
   }
@@ -150,9 +154,9 @@ const keyup = e => {
       zero = true
     }
   } else if (sub.select(2) === 'g ')     // google search
-    setSearchType(SEARCHTYPE.search.google, 'search')
+    setSearchType(SEARCHTYPE.internet.google, 'search')
   else if (sub.select(2) === 'b ')     // bing search
-    setSearchType(SEARCHTYPE.search.bing, 'search')
+    setSearchType(SEARCHTYPE.internet.bing, 'search')
   else if (sub.select(5) === 'drive')    // 'drive' = search specific drive
     setSearchType(SEARCHTYPE.drive, 'hdd')
 }
@@ -167,7 +171,8 @@ const submit = sub => {
   sub = sub.trim()
 
   // google search
-  if (searchType === 'google') return exec(`C:\\Users\\Deadpool\\AppData\\Local\\Vivaldi\\Application\\vivaldi.exe http://google.com/search?q=${sub}`)
+  if (searchType === 'google') return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
+  if (searchType === 'bing') return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
 
   // Check if removing spaces makes it the same length... if so, it has flags, otherwise, it doesn't
   const hasFlags = sub.length !== sub.replace(/\s/, '').length

@@ -1,7 +1,6 @@
 const path = require('path')
-const fs = require('fs')
-const { exec } = require('./utils')
-const { RPLOC } = require('./constants')
+const { exec, fs } = require('./api')
+const constants = require('./constant')
 
 const config = {
   'primaryDirectories' : [
@@ -11,10 +10,11 @@ const config = {
     'C:\\Windows'
   ],
   'commands' : {
-    'cc': () => exec('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'),
+    'cc': () => exec(constants.BROWSER.CHROME),
     'rp': (flags) => {
       if (!flags.length) {
-        console.log(fs.existsSync(path.join(RPLOC, 'rp.dll')))
+        const yayornay = fs('existsSync', path.join(constants.RPLOC, 'rp.dll'))
+        console.log('yay or nay: ', yayornay)
       } else {
         console.log('flags: ', flags)
       }
