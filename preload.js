@@ -8,10 +8,12 @@ const config = require('./config')
 // Util functions
 const { quit, isLetter } = require('./utils')
 // Constants
-const defaultBrowser = require('./constant').BROWSER.DEFAULT
-
+const defaultBrowser = require('./globals').BROWSER.DEFAULT
+const index = require('./globals').INDEX
 
 const { exec, fs } = require('./api')
+
+console.log('INDEX: ', index)
 
 // CONSTANTS
 // the bar
@@ -115,11 +117,13 @@ const keydown = e => {
 }
 
 const keyup = e => {
+  // Key presed
   const key = e.key
+  // Bar value
   const sub = BAR.value
 
   switch (key) {
-    // This will go away when completed
+    // This will go away when completed (and moved to WinHid in AHK
     case 'Escape': return quit()
     // Submits the value
     case 'Enter': return submit(sub)
@@ -140,7 +144,7 @@ const keyup = e => {
     if (searchType === 'drive' && sub[3] !== ' ') return reset()
   }
 
-  if (searchType) return
+  if (searchType === 'drive') searchHDD()
 
   // List of commands, if there is no search type
 
@@ -161,18 +165,26 @@ const keyup = e => {
     setSearchType(SEARCHTYPE.drive, 'hdd')
 }
 
+// Decide what the bar is going to
 const setSearchType = (type, icon) => {
+  // Set searchType
   searchType = type
+  // Reset value of bar
   BAR.value = ''
+  // Change icon for the selected search type
   changeIcon(icon)
 }
 
 const submit = sub => {
   sub = sub.trim()
 
+  // Hard drive search is dynamic, so submitting is unnecessary
+  if (searchType === SEARCHTYPE.drive) return
+
   // google search
-  if (searchType === 'google') return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
-  if (searchType === 'bing') return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
+  if (searchType === SEARCHTYPE.internet.google) return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
+  if (searchType === SEARCHTYPE.internet.bing) return exec(`${defaultBrowser} http://google.com/search?q=${sub}`)
+
 
   // Check if removing spaces makes it the same length... if so, it has flags, otherwise, it doesn't
   const hasFlags = sub.length !== sub.replace(/\s/, '').length
@@ -187,4 +199,8 @@ const submit = sub => {
   const flags = hasFlags ? getFlags(sub) : null
 
   return config.commands[cmd](flags)
+}
+
+const searchHDD = val => {
+
 }

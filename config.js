@@ -1,13 +1,10 @@
 const path = require('path')
 const { exec, fs } = require('./api')
-const constants = require('./constant')
+const constants = require('./globals')
 
 const config = {
-  'primaryDirectories' : [
-    'C:\\Games',
-    'C:\\Program Files',
-    'C:\\Program Files (x86)',
-    'C:\\Windows'
+  'indexDirectories' : [
+    'C:\\Games'
   ],
   'commands' : {
     'cc': () => exec(constants.BROWSER.CHROME),

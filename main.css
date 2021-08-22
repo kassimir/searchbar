@@ -11,9 +11,8 @@ body {
   overflow: hidden;
 }
 
-#bar {
+#bar, #results {
   margin: 0;
-  height: 55px;
   width: 505px;
   border-radius: 5px;
   outline: none;
@@ -21,8 +20,21 @@ body {
   padding-left: 50px;
 }
 
+#bar, .result-item {
+  height: 55px;
+}
+
 #icon {
   position: absolute;
   top: 15px;
   left: 10px;
+}
+
+#results {
+  display: none;
+}
+
+.result-item {
+  width: 100%;
+  height: 55px;
 }
